@@ -25,3 +25,18 @@ In the second commit, the handle_connection function was updated to return an HT
 
 Here is the output of the html if we run it on local
 ![Commit 2 screen capture](/assets/images/commit2.png)
+
+# Commit 3 Reflection notes
+
+## Validating request and selectively responding
+
+In the third commit, the handle_connection function was further updated to validate the incoming HTTP request and selectively respond based on the requested URL:
+
+- Validates Request: The function now checks the request line to determine whether the client is requesting the hello.html page or an undefined route.
+- Selectively Responds: Based on the validation, the function responds with either:
+    - The contents of hello.html and a 200 OK status if the request is valid.
+    - The contents of error.html and a 404 NOT FOUND status if the request is for an undefined route.
+- Error Handling: An error.html file was created to display a custom error message when the requested page is not available.
+
+Example of url other than http://127.0.0.1:7878/:
+![Commit 3 screen capture](/assets/images/commit3_bad.png)
