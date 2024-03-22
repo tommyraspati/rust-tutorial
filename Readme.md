@@ -58,3 +58,24 @@ In the fourth commit, the handle_connection function was updated to simulate a s
 - Blocking Behavior: When the /sleep route is accessed, the server becomes unresponsive to other requests until the sleep duration is over. This is because the server is running in a single-threaded, blocking mode, and cannot handle multiple requests simultaneously.
 
 - Impact on User Experience: This simulation demonstrates how a long-running operation on the server can impact the user experience by causing delays in response times. In a real-world scenario, it's important to handle such operations asynchronously or in a separate thread to avoid blocking the server.
+
+# Commit 5 Reflection notes
+
+## Multithreaded Server
+In the fifth commit, the server was upgraded to a multithreaded architecture using a thread pool. This improvement allows the server to handle multiple connections concurrently, enhancing its performance and scalability.
+
+### Implementation Details:
+
+- **ThreadPool Structure**: A new ThreadPool struct was introduced to manage a pool of worker threads. The pool is responsible for distributing incoming tasks (in this case, handling connections) across multiple threads.
+
+- **Worker Threads**: Each worker in the thread pool is represented by the Worker struct, which contains a thread that listens for and executes tasks. Workers continuously wait for new tasks and execute them as they arrive.
+
+- **Job Distribution**: The ThreadPool uses a channel to send tasks (wrapped in the Job type) to the worker threads. When a new connection is received, the pool.execute method is used to assign the task of handling that connection to one of the workers.
+
+- **Graceful Shutdown**: While not fully implemented in this commit, the structure of the ThreadPool allows for the possibility of implementing a graceful shutdown mechanism in the future, where the threads can be cleanly stopped when the server is shutting down.
+
+### Key Changes:
+
+- **Connection Handling**: The main loop that accepts incoming connections now uses the ThreadPool to handle each connection in a separate thread, allowing for concurrent processing of multiple connections.
+
+- **Scalability**: By using a fixed number of threads in the pool, the server can limit the resources used while still being able to handle a significant number of concurrent connections.
