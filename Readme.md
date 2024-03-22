@@ -40,3 +40,21 @@ In the third commit, the handle_connection function was further updated to valid
 
 Example of url other than http://127.0.0.1:7878/:
 ![Commit 3 screen capture](/assets/images/commit3_bad.png)
+
+# Commit 4 Reflection notes
+
+## Simulation slow response
+
+In the fourth commit, the handle_connection function was updated to simulate a slow response for a specific route. This addition is meant to demonstrate how the server behaves when a request takes longer to process.
+
+### Implementation Details:
+
+- New Route /sleep: A new route GET /sleep HTTP/1.1 was introduced. When this route is accessed, the server simulates a slow response by pausing for 10 seconds before sending the response.
+
+- Thread Sleep: The thread::sleep(Duration::from_secs(10)); function is used to create the delay. This function puts the current thread to sleep for the specified duration, effectively blocking the server from processing other requests during this time.
+
+### Observations:
+
+- Blocking Behavior: When the /sleep route is accessed, the server becomes unresponsive to other requests until the sleep duration is over. This is because the server is running in a single-threaded, blocking mode, and cannot handle multiple requests simultaneously.
+
+- Impact on User Experience: This simulation demonstrates how a long-running operation on the server can impact the user experience by causing delays in response times. In a real-world scenario, it's important to handle such operations asynchronously or in a separate thread to avoid blocking the server.
